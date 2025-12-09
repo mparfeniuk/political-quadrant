@@ -448,6 +448,18 @@ export const PoliticalQuadrantSurvey = () => {
 
   const watermarkLabels = quadrantLabels[language];
   const quadrantDetail = (key: QuadrantKey) => quadrantDetails[key];
+  const xLabelValue =
+    showWatermarks || typeof window === "undefined"
+      ? axisLabels[language].x
+      : language === "ua"
+        ? "Економіка: 0—100"
+        : "Economy: 0—100";
+  const yLabelValue =
+    showWatermarks || typeof window === "undefined"
+      ? axisLabels[language].y
+      : language === "ua"
+        ? "Соціальна сфера: 0—100"
+        : "Social: 0—100";
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 md:px-4 py-10">
@@ -721,7 +733,7 @@ export const PoliticalQuadrantSurvey = () => {
                 domain={[0, 100]}
                 tickCount={6}
                 label={{
-                  value: axisLabels[language].x,
+                  value: xLabelValue,
                   position: "insideBottom",
                   dy: 18,
                   style: {
@@ -737,7 +749,7 @@ export const PoliticalQuadrantSurvey = () => {
                 domain={[0, 100]}
                 tickCount={6}
                 label={{
-                  value: axisLabels[language].y,
+                  value: yLabelValue,
                   angle: -90,
                   position: "insideLeft",
                   dx: -10,
