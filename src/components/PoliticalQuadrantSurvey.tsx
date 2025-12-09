@@ -136,7 +136,7 @@ const QuestionCard = ({
   onChange: (id: string, value: number) => void;
   lang: Language;
 }) => (
-  <div className="rounded-xl bg-white/60 p-4 shadow-sm sm:rounded-2xl sm:bg-white/70 sm:p-6 sm:shadow-card sm:ring-1 sm:ring-slate-100 sm:backdrop-blur">
+  <div className="md:rounded-2xl md:bg-white/70 md:p-6 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
     <div className="mb-4 flex items-center justify-between">
       <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
       <div className="text-xs text-slate-500">
@@ -488,7 +488,7 @@ export const PoliticalQuadrantSurvey = () => {
         />
       </div>
 
-      <div className="rounded-xl bg-white/70 p-4 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-6 sm:shadow-card sm:ring-1 sm:ring-slate-100 sm:backdrop-blur">
+      <div className="md:rounded-2xl md:bg-white/80 md:p-6 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
         <div className="mb-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h3 className="text-lg font-semibold text-slate-900">
@@ -599,7 +599,7 @@ export const PoliticalQuadrantSurvey = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-xl bg-white/70 p-4 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-5 sm:shadow-card sm:ring-1 sm:ring-slate-100 sm:backdrop-blur">
+        <div className="md:rounded-2xl md:bg-white/80 md:p-5 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
           <div className="flex items-center justify-between">
             <h4 className="text-base font-semibold text-slate-900">
               {text.yourPoint}
@@ -628,7 +628,7 @@ export const PoliticalQuadrantSurvey = () => {
           </dl>
         </div>
 
-        <div className="rounded-xl bg-white/70 p-4 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-5 sm:shadow-card sm:ring-1 sm:ring-slate-100 sm:backdrop-blur">
+        <div className="md:rounded-2xl md:bg-white/80 md:p-5 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
           <h4 className="text-base font-semibold text-slate-900">
             {text.legendTitle}
           </h4>
@@ -697,7 +697,7 @@ export const PoliticalQuadrantSurvey = () => {
         </div>
       </div>
 
-      <div className="rounded-xl bg-white/70 p-4 shadow-sm sm:rounded-2xl sm:bg-white/80 sm:p-6 sm:shadow-card sm:ring-1 sm:ring-slate-100 sm:backdrop-blur">
+      <div className="md:rounded-2xl md:bg-white/80 md:p-6 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-900">
             {axisLabels[language].title}
