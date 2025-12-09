@@ -726,8 +726,8 @@ export const PoliticalQuadrantSurvey = () => {
                   dy: 18,
                   style: {
                     fill: "#475569",
-                    fontSize: 12,
-                    fontWeight: 700,
+                    fontSize: 11,
+                    fontWeight: 500,
                   },
                 }}
               />
@@ -743,8 +743,8 @@ export const PoliticalQuadrantSurvey = () => {
                   dx: -10,
                   style: {
                     fill: "#475569",
-                    fontSize: 12,
-                    fontWeight: 700,
+                    fontSize: 11,
+                    fontWeight: 500,
                     textAnchor: "middle",
                   },
                 }}
