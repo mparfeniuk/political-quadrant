@@ -472,7 +472,6 @@ export const PoliticalQuadrantSurvey = () => {
             <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
               {text.title}
             </h1>
-            <p className="mt-2 text-slate-600">{text.description}</p>
           </div>
           <div className="shrink-0 md:hidden">
             <LanguageToggle lang={language} onChange={setLanguage} />
@@ -482,7 +481,7 @@ export const PoliticalQuadrantSurvey = () => {
           <LanguageToggle lang={language} onChange={setLanguage} />
         </div>
       </div>
-
+      <p className="mt-1 flex-1 text-slate-600">{text.description}</p>
       <div className="grid gap-5 lg:grid-cols-2">
         <QuestionCard
           title={text.socialTitle}
