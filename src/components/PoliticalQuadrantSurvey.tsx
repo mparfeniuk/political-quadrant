@@ -452,14 +452,14 @@ export const PoliticalQuadrantSurvey = () => {
     showWatermarks || typeof window === "undefined"
       ? axisLabels[language].x
       : language === "ua"
-        ? "Економіка: 0—100"
-        : "Economy: 0—100";
+      ? "Економіка: 0—100"
+      : "Economy: 0—100";
   const yLabelValue =
     showWatermarks || typeof window === "undefined"
       ? axisLabels[language].y
       : language === "ua"
-        ? "Соціальна сфера: 0—100"
-        : "Social: 0—100";
+      ? "Соціальна сфера: 0—100"
+      : "Social: 0—100";
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 md:px-4 py-10">
@@ -472,7 +472,7 @@ export const PoliticalQuadrantSurvey = () => {
             <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
               {text.title}
             </h1>
-            <p className="mt-2 max-w-3xl text-slate-600">{text.description}</p>
+            <p className="mt-2 text-slate-600">{text.description}</p>
           </div>
           <div className="shrink-0 md:hidden">
             <LanguageToggle lang={language} onChange={setLanguage} />
