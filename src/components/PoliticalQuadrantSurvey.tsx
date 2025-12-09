@@ -155,7 +155,7 @@ const QuestionCard = ({
             {question.text[lang]}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-slate-500">
+            <span className="hidden text-xs text-slate-500 md:inline">
               {lang === "ua" ? "менше контролю" : "less control"}
             </span>
             {scaleValues.map((val) => (
@@ -179,7 +179,7 @@ const QuestionCard = ({
                 {val}
               </label>
             ))}
-            <span className="text-xs text-slate-500">
+            <span className="hidden text-xs text-slate-500 md:inline">
               {lang === "ua" ? "більше контролю" : "more control"}
             </span>
           </div>
