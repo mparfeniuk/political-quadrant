@@ -437,10 +437,10 @@ export const PoliticalQuadrantSurvey = () => {
     if (!active || !payload || !payload.length) return null;
     const p = payload[0].payload;
     return (
-      <div className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-800 shadow-lg">
+      <div className="max-w-[200px] rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-slate-800 shadow-lg">
         <div className="flex items-center gap-2 font-semibold">
           <span>{p.emoji}</span>
-          <span>{p.nickname}</span>
+          <span className="break-words">{p.nickname}</span>
           {p.id === "current" && (
             <span className="text-xs text-indigo-600">
               {language === "ua" ? "попередній" : "preview"}
@@ -449,7 +449,7 @@ export const PoliticalQuadrantSurvey = () => {
         </div>
         {p.slogan && (
           <div
-            className="mt-1 text-xs"
+            className="mt-1 break-words text-xs"
             style={{
               color: p.sloganColor || "#0f172a",
               fontWeight: p.sloganWeight || "normal",
