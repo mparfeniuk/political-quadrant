@@ -7,7 +7,7 @@ import {
   quadrantDetails,
   type Language,
   type QuadrantKey,
-} from "../../src/data/questions";
+} from "./data/questions";
 
 const SKIP_UA = "Пропустити ➡️";
 const SKIP_EN = "Skip ➡️";
