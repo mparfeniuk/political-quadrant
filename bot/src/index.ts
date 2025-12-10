@@ -21,6 +21,7 @@ const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000
 const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
 const HAS_CLIENT_KEY = Boolean(INSTANT_DB_CLIENT_KEY);
 const schema = {
+  links: {},
   records: {
     nickname: "string",
     emoji: "string",
