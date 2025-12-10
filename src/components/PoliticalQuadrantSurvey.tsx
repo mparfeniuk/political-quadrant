@@ -146,13 +146,13 @@ const QuestionCard = ({
       </div>
     </div>
     <div className="space-y-5">
-      {questions.map((question) => (
+      {questions.map((question, idx) => (
         <div
           key={question.id}
           className="rounded-xl border border-slate-200 bg-white/60 p-4 shadow-sm"
         >
           <div className="mb-3 text-sm font-medium text-slate-900">
-            {question.text[lang]}
+            {idx + 1}. {question.text[lang]}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="hidden text-xs text-slate-500 md:inline">
