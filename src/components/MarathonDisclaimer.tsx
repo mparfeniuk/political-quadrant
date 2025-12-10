@@ -90,7 +90,10 @@ export const MarathonDisclaimer = () => {
             </div>
             <ul className="mt-1 space-y-1">
               {t.bullets.map((line) => (
-                <li key={line} className="flex gap-2 text-sm leading-snug text-black">
+                <li
+                  key={line}
+                  className="flex gap-2 text-sm leading-snug text-black"
+                >
                   <span className="mt-1 text-xs">✔</span>
                   <span className="leading-snug">{line}</span>
                 </li>
@@ -102,4 +105,3 @@ export const MarathonDisclaimer = () => {
     </div>
   );
 };
-
