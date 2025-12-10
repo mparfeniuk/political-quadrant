@@ -122,8 +122,11 @@ function nextQuestion(ctx: any, s: Session) {
     );
   }
   const q = flowQuestions[s.step];
+  const questionNum = s.step + 1;
+  const total = flowQuestions.length;
+  const prefix = s.lang === "ua" ? `Питання ${questionNum}/${total}` : `Question ${questionNum}/${total}`;
   return ctx.reply(
-    q.text[s.lang],
+    `${prefix}\n${q.text[s.lang]}`,
     Markup.keyboard([["1", "2", "3", "4", "5"]]).oneTime().resize()
   );
 }
