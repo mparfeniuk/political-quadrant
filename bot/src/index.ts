@@ -137,6 +137,18 @@ bot.start((ctx) => {
   );
 });
 
+bot.command(["reset", "stop", "exit"], (ctx) => {
+  const lang =
+    sessions.get(ctx.from.id)?.lang ||
+    (ctx.from?.language_code?.startsWith("uk") ? "ua" : "en");
+  sessions.delete(ctx.from.id);
+  return ctx.reply(
+    lang === "ua"
+      ? "Сесію скинуто. Натисни /start, щоб почати спочатку."
+      : "Session cleared. Tap /start to begin again."
+  );
+});
+
 bot.hears(["UA", "EN"], (ctx) => {
   const sess = sessions.get(ctx.from.id);
   if (!sess) return;
