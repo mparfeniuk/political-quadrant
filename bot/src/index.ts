@@ -20,18 +20,6 @@ const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000);
 const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
 const HAS_CLIENT_KEY = Boolean(INSTANT_DB_CLIENT_KEY);
-const schema = {
-  links: {},
-  records: {
-    nickname: "string",
-    emoji: "string",
-    x: "number",
-    y: "number",
-    createdAt: "string",
-    language: "string",
-    slogan: "string",
-  },
-} as const;
 
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN is required");
@@ -43,7 +31,6 @@ const db =
   init({
     appId: INSTANT_DB_APP_ID,
     clientKey: HAS_CLIENT_KEY ? INSTANT_DB_CLIENT_KEY : undefined,
-    schema,
   } as any);
 
 if (!HAS_APP_ID) {
@@ -110,6 +97,7 @@ async function saveResult(input: {
   }
   try {
     await db.auth.signInAsGuest();
+    console.log("[instantdb] auth guest ok");
   } catch (err) {
     console.warn("[instantdb] auth failed", err);
     throw err;
