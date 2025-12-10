@@ -708,7 +708,10 @@ export const PoliticalQuadrantSurvey = () => {
         </div>
       </div>
 
-      <div className="md:rounded-2xl md:bg-white/80 md:p-6 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur">
+      <div
+        id="chart"
+        className="md:rounded-2xl md:bg-white/80 md:p-6 md:shadow-card md:ring-1 md:ring-slate-100 md:backdrop-blur"
+      >
         <div className="mb-4 md:flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-900">
             {axisLabels[language].title}

@@ -199,6 +199,7 @@ bot.on("text", async (ctx) => {
       sess.nickname ||
       (sess.lang === "ua" ? "Анонімний користувач" : "Anonymous");
     const emoji = sess.emoji || "😀";
+    const chartUrl = "https://political-quadrant.vercel.app/#chart";
 
     try {
       await saveResult({
@@ -236,7 +237,19 @@ bot.on("text", async (ctx) => {
             detail.description[sess.lang]
           }`;
 
-    await ctx.reply(text, Markup.removeKeyboard());
+    await ctx.reply(text, {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: sess.lang === "ua" ? "Відкрити карту" : "Open chart",
+              url: chartUrl,
+            },
+          ],
+        ],
+        remove_keyboard: true,
+      },
+    });
     sessions.delete(ctx.from.id);
     return;
   }
