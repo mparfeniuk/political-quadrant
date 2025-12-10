@@ -17,6 +17,7 @@ const INSTANT_DB_APP_ID = process.env.INSTANT_DB_APP_ID || "";
 const WEBHOOK_URL = process.env.WEBHOOK_URL || ""; // full https://host
 const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000);
+const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
 
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN is required");
@@ -24,10 +25,14 @@ if (!BOT_TOKEN) {
 }
 
 const db =
-  INSTANT_DB_APP_ID &&
+  HAS_APP_ID &&
   init({
     appId: INSTANT_DB_APP_ID,
   });
+
+if (!HAS_APP_ID) {
+  console.warn("[instantdb] APP_ID missing: saving will be skipped");
+}
 
 type Answers = Record<string, number>;
 type Stage = "questions" | "nickname" | "emoji" | "slogan" | "done";
@@ -80,7 +85,10 @@ async function saveResult(input: {
   language: Language;
   slogan?: string;
 }) {
-  if (!db) return null;
+  if (!db) {
+    console.warn("[instantdb] skip save: db not initialized");
+    return null;
+  }
   await db.auth.signInAsGuest().catch(() => null);
   const recordId = instantId();
   await db.transact([
@@ -219,6 +227,15 @@ bot.on("text", async (ctx) => {
     const emoji = sess.emoji || "😀";
     const chartUrl = "https://political-quadrant.vercel.app/#chart";
 
+    console.log("[bot] saving result", {
+      nick,
+      emoji,
+      x,
+      y,
+      lang: sess.lang,
+      hasDb: Boolean(db),
+    });
+
     try {
       await saveResult({
         nickname: nick,
@@ -231,6 +248,7 @@ bot.on("text", async (ctx) => {
       await ctx.reply(
         sess.lang === "ua" ? "Результат збережено ✅" : "Saved ✅"
       );
+      console.log("[bot] saved OK");
     } catch (err) {
       console.warn("save error", err);
       await ctx.reply(
