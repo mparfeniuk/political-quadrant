@@ -1,6 +1,6 @@
 import { Telegraf, Markup } from "telegraf";
 import dotenv from "dotenv";
-import { init, id as instantId } from "@instantdb/core";
+import { init, id as instantId } from "@instantdb/admin";
 import {
   economicQuestions,
   socialQuestions,
@@ -14,10 +14,11 @@ dotenv.config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const INSTANT_DB_APP_ID = process.env.INSTANT_DB_APP_ID || "";
+const INSTANT_DB_ADMIN_TOKEN = process.env.INSTANT_DB_ADMIN_TOKEN || "";
 const WEBHOOK_URL = process.env.WEBHOOK_URL || ""; // full https://host
 const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000);
-const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
+const HAS_CREDENTIALS = Boolean(INSTANT_DB_APP_ID && INSTANT_DB_ADMIN_TOKEN);
 
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN is required");
@@ -25,13 +26,14 @@ if (!BOT_TOKEN) {
 }
 
 const db =
-  HAS_APP_ID &&
+  HAS_CREDENTIALS &&
   init({
     appId: INSTANT_DB_APP_ID,
+    adminToken: INSTANT_DB_ADMIN_TOKEN,
   });
 
-if (!HAS_APP_ID) {
-  console.warn("[instantdb] APP_ID missing: saving will be skipped");
+if (!HAS_CREDENTIALS) {
+  console.warn("[instantdb] APP_ID or ADMIN_TOKEN missing: saving will be skipped");
 }
 
 type Answers = Record<string, number>;
@@ -89,13 +91,6 @@ async function saveResult(input: {
     console.warn("[instantdb] skip save: db not initialized");
     return null;
   }
-  try {
-    await db.auth.signInAsGuest();
-    console.log("[instantdb] auth guest ok");
-  } catch (err) {
-    console.warn("[instantdb] auth failed", err);
-    throw err;
-  }
   const recordId = instantId();
   const payload = {
     nickname: input.nickname,
@@ -108,6 +103,7 @@ async function saveResult(input: {
   };
   console.log("[instantdb] transact payload", payload);
   await db.transact([db.tx.records[recordId].update(payload)]);
+  console.log("[instantdb] saved OK, id:", recordId);
   return recordId;
 }
 
