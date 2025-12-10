@@ -172,7 +172,16 @@ bot.on("text", async (ctx) => {
 
   if (sess.stage === "emoji") {
     const raw = ctx.message.text?.trim() || "";
-    const emoji = raw.split(/\s+/)[0] || "😀";
+    // Validate single emoji (reject plain text/words).
+    const match = raw.match(/\p{Extended_Pictographic}/u);
+    const emoji = match && match.length === 1 ? match[0] : "";
+    if (!emoji) {
+      return ctx.reply(
+        sess.lang === "ua"
+          ? "Будь ласка, надішли один emoji (без тексту). Напр.: 🦊"
+          : "Send exactly one emoji (no text). E.g.: 🦊"
+      );
+    }
     sess.emoji = emoji;
     sess.stage = "slogan";
     return ctx.reply(
@@ -211,9 +220,7 @@ bot.on("text", async (ctx) => {
         slogan: sess.slogan,
       });
       await ctx.reply(
-        sess.lang === "ua"
-          ? "Збережено в InstantDB ✅"
-          : "Saved to InstantDB ✅"
+        sess.lang === "ua" ? "Результат збережено ✅" : "Saved ✅"
       );
     } catch (err) {
       console.warn("save error", err);
