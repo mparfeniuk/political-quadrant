@@ -107,14 +107,18 @@ async function saveResult(input: {
   return recordId;
 }
 
+const SKIP_UA = "Пропустити ➡️";
+const SKIP_EN = "Skip ➡️";
+
 function nextQuestion(ctx: any, s: Session) {
   if (s.step >= flowQuestions.length) {
     s.stage = "nickname";
+    const skipBtn = s.lang === "ua" ? SKIP_UA : SKIP_EN;
     return ctx.reply(
       s.lang === "ua"
-        ? "Введіть нік (можна порожнім — буде Анонімний користувач)"
-        : "Enter a nickname (or leave empty for Anonymous)",
-      Markup.removeKeyboard()
+        ? "Введіть нік (можна пропустити — буде Анонімний користувач)"
+        : "Enter a nickname (or skip for Anonymous)",
+      Markup.keyboard([[skipBtn]]).oneTime().resize()
     );
   }
   const q = flowQuestions[s.step];
@@ -184,18 +188,19 @@ bot.on("text", async (ctx) => {
 
   if (sess.stage === "nickname") {
     const raw = ctx.message.text?.trim() || "";
-    const nickname =
-      raw.length === 0
-        ? sess.lang === "ua"
-          ? "Анонімний користувач"
-          : "Anonymous"
-        : raw.slice(0, 20);
+    const isSkip = raw === SKIP_UA || raw === SKIP_EN || raw.length === 0;
+    const nickname = isSkip
+      ? sess.lang === "ua"
+        ? "Анонімний користувач"
+        : "Anonymous"
+      : raw.slice(0, 20);
     sess.nickname = nickname;
     sess.stage = "emoji";
     return ctx.reply(
       sess.lang === "ua"
         ? `Обери emoji (можна ввести своє). Приклади: ${emojiChoices}`
-        : `Pick an emoji (or type your own). Examples: ${emojiChoices}`
+        : `Pick an emoji (or type your own). Examples: ${emojiChoices}`,
+      Markup.removeKeyboard()
     );
   }
 
@@ -213,16 +218,19 @@ bot.on("text", async (ctx) => {
     }
     sess.emoji = emoji;
     sess.stage = "slogan";
+    const skipBtn = sess.lang === "ua" ? SKIP_UA : SKIP_EN;
     return ctx.reply(
       sess.lang === "ua"
         ? "Моє політичне гасло (до 40 символів, можна пропустити):"
-        : "Your political slogan (up to 40 chars, optional):"
+        : "Your political slogan (up to 40 chars, optional):",
+      Markup.keyboard([[skipBtn]]).oneTime().resize()
     );
   }
 
   if (sess.stage === "slogan") {
     const raw = ctx.message.text?.trim() || "";
-    sess.slogan = raw.slice(0, 40);
+    const isSkip = raw === SKIP_UA || raw === SKIP_EN;
+    sess.slogan = isSkip ? "" : raw.slice(0, 40);
     sess.stage = "done";
 
     const activeSocial = flowQuestions.filter((q) => q.axis === "social");
