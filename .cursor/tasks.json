@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "webhook-info": {
+      "run": "curl https://api.telegram.org/bot8382904114:AAEtFfI6HsWfNtzXi98PsZCq08CGoV7RrEs/getWebhookInfo"
+    }
+  }
+}
