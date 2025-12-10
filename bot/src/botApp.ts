@@ -226,8 +226,8 @@ export function createBot() {
       const skipBtn = sess.lang === "ua" ? SKIP_UA : SKIP_EN;
       return ctx.reply(
         sess.lang === "ua"
-          ? "Моє політичне гасло (до 40 символів, можна пропустити):"
-          : "Your political slogan (up to 40 chars, optional):",
+          ? "Моє політичне гасло (до 100 символів, можна пропустити):"
+          : "Your political slogan (up to 100 chars, optional):",
         Markup.keyboard([[skipBtn]]).oneTime().resize()
       );
     }
@@ -235,7 +235,7 @@ export function createBot() {
     if (sess.stage === "slogan") {
       const raw = ctx.message.text?.trim() || "";
       const isSkip = raw === SKIP_UA || raw === SKIP_EN;
-      sess.slogan = isSkip ? "" : raw.slice(0, 40);
+      sess.slogan = isSkip ? "" : raw.slice(0, 100);
       sess.stage = "done";
 
       const activeSocial = flowQuestions.filter((q) => q.axis === "social");

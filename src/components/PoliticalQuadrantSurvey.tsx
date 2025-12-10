@@ -538,14 +538,14 @@ export const PoliticalQuadrantSurvey = () => {
               </label>
               <textarea
                 value={slogan}
-                onChange={(e) => setSlogan(e.target.value.slice(0, 40))}
-                maxLength={40}
+                onChange={(e) => setSlogan(e.target.value.slice(0, 100))}
+                maxLength={100}
                 rows={3}
                 className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm outline-none ring-0 transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                 placeholder={
                   language === "ua"
-                    ? "До 40 символів (буде показано в тултіпі)"
-                    : "Up to 40 chars (shown in tooltip)"
+                    ? "До 100 символів (буде показано в тултіпі)"
+                    : "Up to 100 chars (shown in tooltip)"
                 }
               />
               <div className="flex items-center gap-3">
@@ -670,7 +670,9 @@ export const PoliticalQuadrantSurvey = () => {
                 <span className="flex-1 font-medium text-slate-700 group-hover:text-indigo-700">
                   {quadrantLabels[language].topRight}
                 </span>
-                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">→</span>
+                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">
+                  →
+                </span>
               </button>
             </li>
             <li>
@@ -686,7 +688,9 @@ export const PoliticalQuadrantSurvey = () => {
                 <span className="flex-1 font-medium text-slate-700 group-hover:text-indigo-700">
                   {quadrantLabels[language].topLeft}
                 </span>
-                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">→</span>
+                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">
+                  →
+                </span>
               </button>
             </li>
             <li>
@@ -702,7 +706,9 @@ export const PoliticalQuadrantSurvey = () => {
                 <span className="flex-1 font-medium text-slate-700 group-hover:text-indigo-700">
                   {quadrantLabels[language].bottomRight}
                 </span>
-                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">→</span>
+                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">
+                  →
+                </span>
               </button>
             </li>
             <li>
@@ -718,7 +724,9 @@ export const PoliticalQuadrantSurvey = () => {
                 <span className="flex-1 font-medium text-slate-700 group-hover:text-indigo-700">
                   {quadrantLabels[language].bottomLeft}
                 </span>
-                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">→</span>
+                <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-indigo-500">
+                  →
+                </span>
               </button>
             </li>
           </ul>
