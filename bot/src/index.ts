@@ -14,12 +14,10 @@ dotenv.config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const INSTANT_DB_APP_ID = process.env.INSTANT_DB_APP_ID || "";
-const INSTANT_DB_CLIENT_KEY = process.env.INSTANT_DB_CLIENT_KEY || "";
 const WEBHOOK_URL = process.env.WEBHOOK_URL || ""; // full https://host
 const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000);
 const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
-const HAS_CLIENT_KEY = Boolean(INSTANT_DB_CLIENT_KEY);
 
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN is required");
@@ -30,14 +28,10 @@ const db =
   HAS_APP_ID &&
   init({
     appId: INSTANT_DB_APP_ID,
-    clientKey: HAS_CLIENT_KEY ? INSTANT_DB_CLIENT_KEY : undefined,
-  } as any);
+  });
 
 if (!HAS_APP_ID) {
   console.warn("[instantdb] APP_ID missing: saving will be skipped");
-}
-if (!HAS_CLIENT_KEY) {
-  console.warn("[instantdb] CLIENT_KEY missing: using appId only");
 }
 
 type Answers = Record<string, number>;
@@ -113,7 +107,7 @@ async function saveResult(input: {
     slogan: input.slogan,
   };
   console.log("[instantdb] transact payload", payload);
-  await db.transact([(db.tx.records as any)[recordId].set(payload)]);
+  await db.transact([db.tx.records[recordId].update(payload)]);
   return recordId;
 }
 
