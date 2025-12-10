@@ -20,6 +20,17 @@ const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || process.env.PORT || 3000);
 const HAS_APP_ID = Boolean(INSTANT_DB_APP_ID);
 const HAS_CLIENT_KEY = Boolean(INSTANT_DB_CLIENT_KEY);
+const schema = {
+  records: {
+    nickname: "string",
+    emoji: "string",
+    x: "number",
+    y: "number",
+    createdAt: "string",
+    language: "string",
+    slogan: "string",
+  },
+} as const;
 
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN is required");
@@ -28,12 +39,11 @@ if (!BOT_TOKEN) {
 
 const db =
   HAS_APP_ID &&
-  init(
-    {
-      appId: INSTANT_DB_APP_ID,
-      clientKey: HAS_CLIENT_KEY ? INSTANT_DB_CLIENT_KEY : undefined,
-    } as any
-  );
+  init({
+    appId: INSTANT_DB_APP_ID,
+    clientKey: HAS_CLIENT_KEY ? INSTANT_DB_CLIENT_KEY : undefined,
+    schema,
+  } as any);
 
 if (!HAS_APP_ID) {
   console.warn("[instantdb] APP_ID missing: saving will be skipped");
