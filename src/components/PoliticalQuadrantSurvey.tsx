@@ -285,6 +285,16 @@ export const PoliticalQuadrantSurvey = () => {
     };
   }, [toastTimer]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash === "#chart") {
+      requestAnimationFrame(() => {
+        const el = document.getElementById("chart");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, []);
+
   const showToast = (
     message: string,
     type: "success" | "error" = "success"
