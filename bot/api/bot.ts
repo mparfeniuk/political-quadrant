@@ -1,7 +1,7 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEBHOOK_PATH = process.env.WEBHOOK_PATH || "/tg-webhook";
 
 if (!BOT_TOKEN) {
   throw new Error("BOT_TOKEN is required");
@@ -9,19 +9,19 @@ if (!BOT_TOKEN) {
 
 const bot = new Telegraf(BOT_TOKEN);
 
-// Reuse main bot logic by importing the built handler would be ideal,
-// but for brevity, we just register a simple ping here.
-// You can extend this file to import your full bot if desired.
+// Simple ping handler for now
 bot.on("message", (ctx) => ctx.reply("Bot is running via webhook ✅"));
 
-const handler = bot.webhookCallback(WEBHOOK_PATH);
-
-export default async function handlerWrapper(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
-    res.statusCode = 200;
-    res.end("ok");
-    return;
+    return res.status(200).send("ok");
   }
-  return handler(req, res);
+  try {
+    await bot.handleUpdate(req.body);
+    res.status(200).send("ok");
+  } catch (err) {
+    console.error("Bot error:", err);
+    res.status(500).send("error");
+  }
 }
 
