@@ -116,9 +116,18 @@ export function createBot() {
       s.lang === "ua"
         ? `Питання ${questionNum}/${total}`
         : `Question ${questionNum}/${total}`;
+    // Use inline keyboard to avoid keyboard flickering
     return ctx.reply(
       `${prefix}\n${q.text[s.lang]}`,
-      Markup.keyboard([["1", "2", "3", "4", "5"]]).oneTime().resize()
+      Markup.inlineKeyboard([
+        [
+          Markup.button.callback("1", "answer_1"),
+          Markup.button.callback("2", "answer_2"),
+          Markup.button.callback("3", "answer_3"),
+          Markup.button.callback("4", "answer_4"),
+          Markup.button.callback("5", "answer_5"),
+        ],
+      ])
     );
   }
 
@@ -163,14 +172,17 @@ export function createBot() {
     ).then(() => nextQuestion(ctx, sess));
   });
 
-  bot.hears(["1", "2", "3", "4", "5"], (ctx) => {
-    const sess = sessions.get(ctx.from.id);
-    if (!sess || sess.stage !== "questions") return;
-    const value = Number(ctx.message.text);
-    if (Number.isNaN(value)) return;
-    const q = allQuestions[sess.step];
+  // Handle inline keyboard answers (1-5)
+  bot.action(/^answer_([1-5])$/, async (ctx) => {
+    const sess = sessions.get(ctx.from!.id);
+    if (!sess || sess.stage !== "questions") {
+      return ctx.answerCbQuery();
+    }
+    const value = Number(ctx.match[1]);
+    const q = flowQuestions[sess.step];
     sess.answers[q.id] = value;
     sess.step += 1;
+    await ctx.answerCbQuery(); // removes the "loading" indicator on button
     return nextQuestion(ctx, sess);
   });
 
