@@ -240,6 +240,7 @@ export const PoliticalQuadrantSurvey = () => {
   const [showQuadrantModal, setShowQuadrantModal] = useState(false);
   const [showWatermarks, setShowWatermarks] = useState(true);
   const [saveCount, setSaveCount] = useState(0);
+  const [isUnlimited, setIsUnlimited] = useState(false);
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
@@ -292,6 +293,15 @@ export const PoliticalQuadrantSurvey = () => {
         const el = document.getElementById("chart");
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       });
+    }
+  }, []);
+
+  // Secret URL param to bypass save limit: ?dev=max
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("dev") === "max") {
+      setIsUnlimited(true);
     }
   }, []);
 
@@ -353,7 +363,7 @@ export const PoliticalQuadrantSurvey = () => {
     const fallbackNick =
       language === "ua" ? "Анонімний користувач" : "Anonymous user";
     const sanitizedNick = nickname.trim() ? nickname.trim() : fallbackNick;
-    if (saveCount >= SAVE_LIMIT) {
+    if (!isUnlimited && saveCount >= SAVE_LIMIT) {
       setError(text.limitError);
       showToast(text.limitError, "error");
       return;
