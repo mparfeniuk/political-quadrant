@@ -97,7 +97,12 @@ async function saveResult(input: {
     console.warn("[instantdb] skip save: db not initialized");
     return null;
   }
-  await db.auth.signInAsGuest().catch(() => null);
+  try {
+    await db.auth.signInAsGuest();
+  } catch (err) {
+    console.warn("[instantdb] auth failed", err);
+    throw err;
+  }
   const recordId = instantId();
   const payload = {
     nickname: input.nickname,
@@ -109,7 +114,7 @@ async function saveResult(input: {
     slogan: input.slogan,
   };
   console.log("[instantdb] transact payload", payload);
-  await db.transact([db.tx.records[recordId].update(payload)]);
+  await db.transact([(db.tx.records as any)[recordId].set(payload)]);
   return recordId;
 }
 
