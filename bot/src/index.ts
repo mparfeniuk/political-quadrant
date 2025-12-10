@@ -45,6 +45,13 @@ type Session = {
 const sessions = new Map<number, Session>();
 
 const allQuestions = [...socialQuestions, ...economicQuestions];
+const QUESTIONS_LIMIT = Number(
+  process.env.BOT_QUESTIONS_LIMIT ||
+    (process.env.BOT_TEST_MODE ? 3 : 0) ||
+    0
+);
+const flowQuestions =
+  QUESTIONS_LIMIT > 0 ? allQuestions.slice(0, QUESTIONS_LIMIT) : allQuestions;
 const emojiChoices =
   "😀 😎 🤖 🐱 🐶 🐼 🦊 🦁 🐸 🦄 🐢 🐍 🦕 🦖 🐧 🦉 🐙 🦋 🐝 🐘 🦒 🐋";
 
@@ -91,7 +98,7 @@ async function saveResult(input: {
 }
 
 function nextQuestion(ctx: any, s: Session) {
-  if (s.step >= allQuestions.length) {
+  if (s.step >= flowQuestions.length) {
     s.stage = "nickname";
     return ctx.reply(
       s.lang === "ua"
@@ -100,7 +107,7 @@ function nextQuestion(ctx: any, s: Session) {
       Markup.removeKeyboard()
     );
   }
-  const q = allQuestions[s.step];
+  const q = flowQuestions[s.step];
   return ctx.reply(
     q.text[s.lang],
     Markup.keyboard([["1", "2", "3", "4", "5"]]).oneTime().resize()
@@ -196,8 +203,10 @@ bot.on("text", async (ctx) => {
     sess.slogan = raw.slice(0, 40);
     sess.stage = "done";
 
-    const socialValues = socialQuestions.map((q) => sess.answers[q.id]);
-    const econValues = economicQuestions.map((q) => sess.answers[q.id]);
+    const activeSocial = flowQuestions.filter((q) => q.axis === "social");
+    const activeEconomic = flowQuestions.filter((q) => q.axis === "economic");
+    const socialValues = activeSocial.map((q) => sess.answers[q.id]);
+    const econValues = activeEconomic.map((q) => sess.answers[q.id]);
     const y = averageNormalized(socialValues);
     const x = averageNormalized(econValues);
     const quadrant = determineQuadrant(x, y);
