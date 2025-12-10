@@ -27,9 +27,22 @@ npm run build
 npm start
 ```
 
+## Webhook mode (for ngrok / Vercel / any HTTPS endpoint)
+- Set env:
+  - `WEBHOOK_URL` — public base URL (e.g., `https://<ngrok-id>.ngrok.io`).
+  - `WEBHOOK_PATH` — optional, defaults to `/tg-webhook`.
+  - `WEBHOOK_PORT` — optional, defaults to `3000` (or `PORT`).
+- Run the bot (`npm run dev` or `npm start`). If `WEBHOOK_URL` is set, bot switches to webhook mode:
+  - Sets Telegram webhook to `WEBHOOK_URL + WEBHOOK_PATH`.
+  - Starts local HTTP server on `WEBHOOK_PORT` and handles POSTs at `WEBHOOK_PATH`.
+- For ngrok testing:
+  1) `ngrok http 3000`
+  2) Export `WEBHOOK_URL=https://<ngrok-host>` and run the bot.
+  3) (Optional) Check webhook: `https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo`
+
 ## Deploy options
 - Long polling on a Node host (Render/Railway/Fly/etc.).
-- Webhook mode (Vercel/Cloudflare) is possible but requires exposing a public URL and wiring `bot.launch({ webhook: { ... }})` — not included in this minimal setup.
+- Webhook mode (Vercel/Cloudflare/ngrok) supported via `WEBHOOK_URL`/`WEBHOOK_PATH`/`WEBHOOK_PORT`.
 
 ## Notes
 - Bot imports questions and labels from `../src/data/questions.ts`. Keep that file in sync with the app.
